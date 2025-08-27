@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ChatGPT Usage Tracker",
-  "version": "1.0",
-  "description": "Monitorizează numărul de mesaje trimise pe ChatGPT.",
+  "name": "ChatGPT ECO Tracker",
+  "version": "2.0",
+  "description": "Monitorizează mesajele ChatGPT și impactul asupra mediului (consum apă/energie).",
   "permissions": ["storage", "scripting"],
   "background": {
     "service_worker": "background.js"
@@ -20,5 +20,3 @@
     }
   }
 }
-
-

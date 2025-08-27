@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ChatGPT Tracker</title>
+    <meta charset="UTF-8">
+    <title>ChatGPT ECO Tracker</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <h3>ChatGPT Usage</h3>
-    <p id="messages">Messages: 0</p>
-    <button id="reset">Reset Counter</button>
+    <div class="header">
+      <div class="eco-badge">🌱 ECO MODE</div>
+      <h3>ChatGPT Impact</h3>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-icon">💬</div>
+        <div class="stat-info">
+          <span class="stat-label">Messages</span>
+          <span id="messages" class="stat-value">0</span>
+        </div>
+      </div>
+      
+      <div class="stat-item">
+        <div class="stat-icon">💧</div>
+        <div class="stat-info">
+          <span class="stat-label">Water Used</span>
+          <span id="water" class="stat-value">0 L</span>
+        </div>
+      </div>
+      
+      <div class="stat-item">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-info">
+          <span class="stat-label">Energy Used</span>
+          <span id="energy" class="stat-value">0 Wh</span>
+        </div>
+      </div>
+      
+      <div class="stat-item">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-info">
+          <span class="stat-label">CO₂ Footprint</span>
+          <span id="carbon" class="stat-value">0 g</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eco-info">
+      <p class="eco-tip">💡 <strong>Eco Tip:</strong> <span id="ecoTip">Shorter prompts use less resources!</span></p>
+    </div>
+
+    <div class="button-container">
+      <button id="reset" class="reset-btn">🔄 Reset Counter</button>
+      <button id="toggleEco" class="eco-btn">🌿 ECO Details</button>
+    </div>
+
+    <div id="ecoDetails" class="eco-details hidden">
+      <h4>Environmental Impact</h4>
+      <div class="detail-item">
+        <span>Per message:</span>
+        <span>~0.5L water, ~4.6Wh energy</span>
+      </div>
+      <div class="detail-item">
+        <span>Equivalent to:</span>
+        <span id="equivalent">-</span>
+      </div>
+    </div>
 
     <script src="popup.js"></script>
   </body>
