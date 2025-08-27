@@ -1,40 +1,93 @@
-console.log("✅ content.js loaded on ChatGPT page");
+console.log("✅ ChatGPT Usage Tracker content script loaded");
 
-function updateCount() {
-  chrome.storage.local.get(["messages"], (data) => {
-    console.log("Popup loaded, messages =", data.messages); // <--- DEBUG
-    document.getElementById("messages").textContent =
-      "Messages: " + (data.messages || 0);
+let messageCount = 0;
+let isTracking = false;
+
+function incrementCounter() {
+  chrome.runtime.sendMessage({ type: "newMessage" }, (response) => {
+    if (chrome.runtime.lastError) {
+      console.log("Error sending message:", chrome.runtime.lastError);
+    } else {
+      console.log("📤 Message sent to background script");
+    }
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateCount();
+function startTracking() {
+  if (isTracking) return;
+  isTracking = true;
 
-  document.getElementById("reset").addEventListener("click", () => {
-    chrome.storage.local.set({ messages: 0 }, updateCount);
+  // Method 1: Listen for Enter key on textarea
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      const textarea = document.querySelector('textarea[data-id="root"]') || 
+                      document.querySelector('textarea') ||
+                      e.target;
+      
+      if (textarea && textarea.tagName === "TEXTAREA" && textarea.value.trim() !== "") {
+        console.log("🔤 Message detected via Enter key");
+        incrementCounter();
+      }
+    }
   });
 
-  document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    let msgBox = document.querySelector("textarea");
-    if (msgBox && msgBox.value.trim() !== "") {
-      console.log("📤 Sending message to background...");
-      chrome.runtime.sendMessage({ type: "newMessage" });
-    }
-  }
-});
-
-
-  // Adaugă event pentru incrementarea mesajelor
-  document.getElementById("sendMessage")?.addEventListener("click", () => {
-    chrome.storage.local.get(["messages"], (data) => {
-      const current = data.messages || 0;
-      chrome.storage.local.set({ messages: current + 1 }, updateCount);
+  // Method 2: Observe DOM changes for new messages
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) { // Element node
+          // Look for user messages (typically have specific classes or attributes)
+          if (node.querySelector && (
+            node.querySelector('[data-message-author-role="user"]') ||
+            node.querySelector('.whitespace-pre-wrap') ||
+            node.matches('[data-message-author-role="user"]')
+          )) {
+            console.log("👤 New user message detected via DOM observer");
+            incrementCounter();
+          }
+        }
+      });
     });
   });
-});
 
-// Ori de câte ori detectezi un mesaj trimis/recepționat:
-chrome.runtime.sendMessage({ action: "increment" });
+  // Start observing the chat container
+  const chatContainer = document.querySelector('main') || 
+                       document.querySelector('[role="main"]') || 
+                       document.body;
+  
+  if (chatContainer) {
+    observer.observe(chatContainer, {
+      childList: true,
+      subtree: true
+    });
+    console.log("👁️ DOM observer started");
+  }
 
+  // Method 3: Click detection on send button
+  document.addEventListener("click", (e) => {
+    // ChatGPT send button selectors (may change over time)
+    if (e.target.matches('button[data-testid="send-button"]') ||
+        e.target.closest('button[data-testid="send-button"]') ||
+        e.target.matches('button svg') ||
+        (e.target.closest('button') && e.target.closest('button').querySelector('svg'))) {
+      
+      const textarea = document.querySelector('textarea[data-id="root"]') || 
+                      document.querySelector('textarea');
+      
+      if (textarea && textarea.value.trim() !== "") {
+        console.log("🖱️ Message detected via send button click");
+        incrementCounter();
+      }
+    }
+  });
+}
+
+// Start tracking when page loads
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startTracking);
+} else {
+  startTracking();
+}
+
+// Also start tracking after a short delay to ensure page is fully loaded
+setTimeout(startTracking, 2000);
