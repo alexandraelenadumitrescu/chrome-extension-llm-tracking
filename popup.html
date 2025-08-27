@@ -1,101 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>ChatGPT Eco Tracker</title>
+  <head>
+    <title>ChatGPT Tracker</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="eco-icon">
-                <i class="fas fa-leaf"></i>
-            </div>
-            <h2>ChatGPT Impact</h2>
-            <div class="eco-badge">ECO MODE</div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card messages">
-                <div class="stat-icon">
-                    <i class="fas fa-comment-dots"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="messages">0</div>
-                    <div class="stat-label">Mesaje</div>
-                </div>
-            </div>
-
-            <div class="stat-card water">
-                <div class="stat-icon water-icon">
-                    <i class="fas fa-tint"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="water">0</div>
-                    <div class="stat-label">ml Apă</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill water-progress" id="waterProgress"></div>
-                </div>
-            </div>
-
-            <div class="stat-card energy">
-                <div class="stat-icon energy-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="energy">0</div>
-                    <div class="stat-label">Wh Energie</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill energy-progress" id="energyProgress"></div>
-                </div>
-            </div>
-
-            <div class="stat-card co2">
-                <div class="stat-icon co2-icon">
-                    <i class="fas fa-smog"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="co2">0</div>
-                    <div class="stat-label">g CO₂</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill co2-progress" id="co2Progress"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="impact-summary">
-            <div class="impact-item">
-                <i class="fas fa-water"></i>
-                <span>Echivalent cu <strong id="bottleEquiv">0</strong> sticle de apă</span>
-            </div>
-            <div class="impact-item">
-                <i class="fas fa-lightbulb"></i>
-                <span>Poate alimenta un LED <strong id="ledTime">0</strong> min</span>
-            </div>
-        </div>
-
-        <div class="actions">
-            <button class="reset-btn" id="reset">
-                <i class="fas fa-redo"></i>
-                Reset Contor
-            </button>
-            <button class="info-btn" id="info">
-                <i class="fas fa-info-circle"></i>
-            </button>
-        </div>
-
-        <div class="footer">
-            <div class="tip">
-                <i class="fas fa-lightbulb"></i>
-                <span>Tip: Folosește prompts precise pentru eficiență!</span>
-            </div>
-        </div>
-    </div>
+  </head>
+  <body>
+    <h3>ChatGPT Usage</h3>
+    <p id="messages">Messages: 0</p>
+    <button id="reset">Reset Counter</button>
 
     <script src="popup.js"></script>
-</body>
+  </body>
 </html>
